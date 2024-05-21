@@ -23,15 +23,23 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("/members/new")
+    @GetMapping("/members/login")
+    public String login(){
+        return "members/login";
+
+    }
+
+    @GetMapping("/members/login/createMemberForm")
     public String createForm(){
         return "members/createMemberForm";
 
     }
-    @PostMapping("/members/new")
+    @PostMapping("/members/createMemberForm")
     public String create(MemberForm form){
       Member member = new Member();
       member.setName(form.getName());
+      member.setId(form.getId());
+
 
       memberService.join(member);
 
