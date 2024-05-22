@@ -34,22 +34,25 @@ public class MemberController {
         return "members/createMemberForm";
 
     }
-    @PostMapping("/members/createMemberForm")
+    @PostMapping("/members/login/createMemberForm")
     public String create(MemberForm form){
       Member member = new Member();
       member.setName(form.getName());
       member.setId(form.getId());
-
+      member.setPassword(form.getPassword());
+      member.setEmail(form.getEmail());
+      member.setPhoneNumber(form.getPhoneNumber());
 
       memberService.join(member);
+      System.out.println(member.getName() + member.getId() + member.getEmail() + member.getPhoneNumber());
 
-      return "redirect:/";
+      return "redirect:/members/login";
     }
 
-    @GetMapping("/members")
-    public String list(Model model){
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
-        return "members/memberList";
-    }
+//    @GetMapping("/members")
+//    public String list(Model model){
+//        List<Member> members = memberService.findMembers();
+//        model.addAttribute("members", members);
+//        return "members/memberList";
+//    }
 }
