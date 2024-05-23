@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -24,30 +25,37 @@ public class MemberController {
     }
 
     @GetMapping("/members/login")
-    public String login(){
+    public String login() {
         return "members/login";
-
     }
 
-    @GetMapping("/members/login/createMemberForm")
-    public String createForm(){
+    @GetMapping("/members/createMemberForm")
+    public String createForm(Model model) {
+        model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
-
     }
-    @PostMapping("/members/login/createMemberForm")
-    public String create(MemberForm form){
-      Member member = new Member();
-      member.setName(form.getName());
-      member.setId(form.getId());
-      member.setPassword(form.getPassword());
-      member.setEmail(form.getEmail());
-      member.setPhoneNumber(form.getPhoneNumber());
 
-      memberService.join(member);
-      System.out.println(member.getName() + member.getId() + member.getEmail() + member.getPhoneNumber());
+    @PostMapping("/members/createMemberForm")
+    public String create(@ModelAttribute("memberForm") MemberForm form) {
+        Member member = new Member();
+        member.setName(form.getName());
+        member.setPassword(form.getPassword());
+        member.setEmail(form.getEmail());
+        member.setPhoneNumber(form.getPhoneNumber());
 
-      return "redirect:/members/login";
+        memberService.registerMember(member);
+
+        return "redirect:/"; // 회원 생성 후 홈 화면으로 이동
     }
+}
+
+
+
+//      memberService.join(member);
+//      System.out.println(member.getName() + member.getId() + member.getEmail() + member.getPhoneNumber());
+//
+//      return "redirect:/members/login";
+//    }
 
 //    @GetMapping("/members")
 //    public String list(Model model){
@@ -55,4 +63,3 @@ public class MemberController {
 //        model.addAttribute("members", members);
 //        return "members/memberList";
 //    }
-}
