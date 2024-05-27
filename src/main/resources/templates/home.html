@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/css/home.css" rel="stylesheet"> <!-- home.css 파일 경로 설정 -->
   <style>
@@ -11,6 +12,10 @@
       object-fit: cover;
       width: 100%;
       height: 65vh; /* 높이를 원하는 비율로 조정 */
+    }
+    .nav-link i {
+      font-size: 1.5rem; /* 아이콘 크기 조정 */
+      margin-right: 5px; /* 아이콘과 텍스트 사이 간격 */
     }
   </style>
   <meta name="author" content=""/>
@@ -29,13 +34,22 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item active">
-          <a class="nav-link text-white" href="/members/login">로그인</a>
+          <a class="nav-link text-white" href="/members/login">
+            <i class="fas fa-sign-in-alt"></i>
+            <span class="visually-hidden">로그인</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="#">상품</a>
+          <a class="nav-link text-white" href="/members/product">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="visually-hidden">상품</span>
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="#">장바구니</a>
+          <a class="nav-link text-white" href="/members/cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="visually-hidden">장바구니</span>
+          </a>
         </li>
       </ul>
     </div>
