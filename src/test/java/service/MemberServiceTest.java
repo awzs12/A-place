@@ -1,28 +1,37 @@
 package service;
 
 import example.domain.Member;
+import example.repository.MemberRepository;
 import example.repository.MemoryMemberRepository;
 import example.service.MemberService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MemberServiceTest {
     //test코드는 실제 코드에 포함x
 
-    MemberService memberservice;
-    MemoryMemberRepository memberRepository;
+    @InjectMocks
+    private MemberService memberService;
+
+    @Mock
+    private MemberRepository memberRepository;
 
 
     @BeforeEach
-    public void beforeEach(){
-        memberRepository = new MemoryMemberRepository();
-        memberservice = new MemberService(memberRepository);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
@@ -33,17 +42,21 @@ class MemberServiceTest {
 
 
     @Test
-    public void 회원가입() {
+    public void registerMember() {
         //given --> 이런게 주어지면 (이 데이터를 기반으로 하는구나)
         Member member = new Member();
         member.setName("hello");
+        member.setEmail("hello@example.com");
+
+        given(memberRepository.findByEmail(member.getEmail())).willReturn(Optional.empty());
+        given(memberRepository.save(member)).willReturn(member);
 
         //when --> 이게 주어졌을 때(이걸 검증하는구나)
-        Long saveId =  memberservice.join(member);
+        Member registeredMember = memberService.registerMember(member);
 
         //then --> 이렇게 실행 되어야 돼(여기가 검증부구나)
-        Member findMember = memberservice.findOne(saveId).get();
-        assertEquals(member.getName(), findMember.getName());
+        assertThat(registeredMember).isEqualTo(member);
+        verify(memberRepository).save(member);
     }
 
     @Test
