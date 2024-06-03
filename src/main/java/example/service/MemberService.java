@@ -33,7 +33,7 @@ public class MemberService {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
-}
+
     /*회원 가입*/
     public Long join(Member member){
         //같은 이름이 있는 중복 회원은 x

@@ -38,7 +38,7 @@ public class MemberController {
 
 
     @PostMapping("/members/login/createMemberForm")
-    public String create(@ModelAttribute MemberForm form) {
+    public String createMember(@ModelAttribute MemberForm form) {
         Member member = new Member();
         member.setName(form.getName());
         member.setPassword(form.getPassword());
