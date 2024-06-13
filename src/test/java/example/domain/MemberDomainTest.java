@@ -13,7 +13,7 @@ class MemberDomainTest {
         /*
         given
          */
-        Member member
+        Member member;
 
     }
 

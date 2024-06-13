@@ -20,21 +20,21 @@ class MemberServiceIntegraionTest {
     @Autowired  MemberService memberservice;
     @Autowired  MemberRepository memberRepository;
 
-
-
-
     @Test
     public void 회원가입() {
         //given --> 이런게 주어지면 (이 데이터를 기반으로 하는구나)
         Member member = new Member();
         member.setName("spring");
+        member.setEmail("spring@example.com");
+        member.setPassword("password123");
+
 
         //when --> 이게 주어졌을 때(이걸 검증하는구나)
-        Long saveId =  memberservice.join(member);
+        Long saveId =  memberservice.registerMember(member);
 
         //then --> 이렇게 실행 되어야 돼(여기가 검증부구나)
         Member findMember = memberservice.findOne(saveId).get();
-        assertEquals(member.getName(), findMember.getName());
+        assertEquals(member.getEmail(), findMember.getEmail());
     }
 
     @Test
@@ -42,12 +42,17 @@ class MemberServiceIntegraionTest {
         //given
         Member member1  = new Member();
         member1.setName("spring");
+        member1.setEmail("spring");
+        member1.setPassword("spring");
+        member1.setPhoneNumber("spring");
+
+
 
         Member member2 = new Member();
         member2.setName("spring");
 
         //when
-        memberservice.join(member1);
+        memberservice.registerMember(member1);
         IllegalStateException e = assertThrows(IllegalStateException.class , () -> memberservice.join(member2));
 
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");

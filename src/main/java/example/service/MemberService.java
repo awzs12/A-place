@@ -1,8 +1,9 @@
 package example.service;
 
-import example.domain.Member;
+import entity.Member;
 import example.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +16,32 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
+    public Member create(String username, String name, String email, String password, String phoneNumber) {
+        Member user = new Member();
+        user.setUserid(username);
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPhoneNumber(phoneNumber);
+        this.memberRepository.save(user);
+        return user;
+    }
 
     public Member registerMember(Member member) {
         validateDuplicateMemberByEmail(member); // 중복 회원 검증
         return memberRepository.save(member);
+    }
+
+    public Optional<Member> login(String email, String password) {
+        return memberRepository.findByEmail(email)
+                .filter(member -> member.getPassword().equals(password));
     }
 
     private void validateDuplicateMemberByEmail(Member member) {
@@ -34,23 +51,6 @@ public class MemberService {
                 });
     }
 
-    /*회원 가입*/
-    public Long join(Member member){
-        //같은 이름이 있는 중복 회원은 x
-        validateDuplicateMemberByName(member);  //중복 회원 검증
-        //optional로 한번 감싸면 optional안에 member객체가 있는거
-        //옛날에는 ifnull 지금은 optional로 감싸기
-        //optional로 바로 반환하는거는 추천x
-        memberRepository.save(member);
-        return member.getId();
-    }
-
-    private void validateDuplicateMemberByName(Member member) {
-        memberRepository.findByName(member.getName())//ctrl + alt + v
-        .ifPresent(m ->{ //result가 null이 아니면 즉, 값이 있으면 동작
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        });
-    }
 
     /*전체 회원 조회*/
     public List<Member> findMembers(){
