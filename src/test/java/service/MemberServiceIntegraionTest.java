@@ -1,6 +1,6 @@
 package service;
 
-import example.domain.Member;
+import entity.Member;
 import example.repository.MemberRepository;
 import example.service.MemberService;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class MemberServiceIntegraionTest {
 
 
         //when --> 이게 주어졌을 때(이걸 검증하는구나)
-        Long saveId =  memberservice.registerMember(member);
+        Long saveId = memberservice.registerMember(member).getId();
 
         //then --> 이렇게 실행 되어야 돼(여기가 검증부구나)
         Member findMember = memberservice.findOne(saveId).get();

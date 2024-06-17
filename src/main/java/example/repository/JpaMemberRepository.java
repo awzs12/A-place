@@ -1,12 +1,11 @@
 package example.repository;
 
-import example.domain.Member;
+import entity.Member;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-import example.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

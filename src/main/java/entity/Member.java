@@ -28,4 +28,8 @@ public class Member {
 
     @Column(nullable = false)
     private String phoneNumber;
+
+    public String getPassword() {
+        return password;
+    }
 }

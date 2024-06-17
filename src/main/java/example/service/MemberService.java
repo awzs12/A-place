@@ -19,8 +19,9 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Member create(String username, String name, String email, String password, String phoneNumber) {
@@ -36,12 +37,15 @@ public class MemberService {
 
     public Member registerMember(Member member) {
         validateDuplicateMemberByEmail(member); // 중복 회원 검증
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
     }
 
     public Optional<Member> login(String email, String password) {
         return memberRepository.findByEmail(email)
-                .filter(member -> member.getPassword().equals(password));
+                .filter(member -> passwordEncoder.matches(password, member.getPassword()));
+
+
     }
 
     private void validateDuplicateMemberByEmail(Member member) {
@@ -58,5 +62,8 @@ public class MemberService {
     }
     public Optional<Member>findOne(Long memberId){
         return memberRepository.findById(memberId);
+    }
+
+    public void join(Member member2) {
     }
 }

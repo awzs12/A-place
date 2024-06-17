@@ -6,10 +6,13 @@ import example.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 //스프링 빈을 등록하는 2가지 방법: 컴포넌트 스캔(@Service,Controller,Repository->@Component)과 의존관계 설정, 자바코드로 직접 스프링 빈 등록하기
@@ -49,18 +52,27 @@ public class MemberController {
     }
 
     @GetMapping("/members/login/createMemberForm")
-    public String createForm(MemberForm memberForm) {
+    public String createForm(Model model) {
+        model.addAttribute("memberForm", new MemberForm());
         return "createMemberForm";
     }
 
 
     @PostMapping("/members/login/createMemberForm")
-    public String createMember(@ModelAttribute MemberForm form) {
+    public String createMember(@Valid @ModelAttribute("memberForm") MemberForm memberForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "members/createMemberForm";
+        }
+        if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
+            bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 패스워드가 일치하지 않습니다.");
+            return "members/signup_form";
+        }
+
         Member member = new Member();
-        member.setName(form.getName());
-        member.setPassword(form.getPassword());
-        member.setEmail(form.getEmail());
-        member.setPhoneNumber(form.getPhoneNumber());
+        member.setName(memberForm.getName());
+        member.setPassword(memberForm.getPassword1());
+        member.setEmail(memberForm.getEmail());
+        member.setPhoneNumber(memberForm.getPhoneNumber());
 
         memberService.registerMember(member);
 

@@ -1,7 +1,7 @@
 package controller;
 
 import example.controller.MemberController;
-import example.domain.Member;
+import entity.Member;
 import example.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

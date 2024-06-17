@@ -8,5 +8,10 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Optional<Object> findByEmail(String email);
+
+    void clearStore();
+
+    Optional<Member> findByName(String spring);
+
+    Optional<Member> findByEmail(String s);
 }

@@ -5,19 +5,25 @@ import example.repository.MemoryMemberRepository;
 import example.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SpringConfig {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public SpringConfig(MemberRepository memberRepository) {
+    public SpringConfig(MemberRepository memberRepository, PasswordEncoder passwordEncoder, WebSecurity web)throws Exception {
+
+        web.ignoring().antMatchers("/h2-console/**");
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public MemberService memberService() {
-        return new MemberService(memberRepository);
+        return new MemberService(memberRepository, passwordEncoder);
     }
 
 
