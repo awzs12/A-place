@@ -1,8 +1,9 @@
-package config;
+package example.config;
 
 import example.repository.MemberRepository;
 import example.repository.MemoryMemberRepository;
 import example.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,9 +15,8 @@ public class SpringConfig {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SpringConfig(MemberRepository memberRepository, PasswordEncoder passwordEncoder, WebSecurity web)throws Exception {
-
-        web.ignoring().antMatchers("/h2-console/**");
+    @Autowired
+    public SpringConfig(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -24,23 +24,15 @@ public class SpringConfig {
     @Bean
     public MemberService memberService() {
         return new MemberService(memberRepository, passwordEncoder);
+
     }
-
-
-
-
-
-
-
-//    @Bean
-//    public MemberService memberService() {
-//        return new MemberService(memberRepository());
-//    }
-//    @Bean
-//    public MemberRepository memberRepository() {
-//        return new MemoryMemberRepository();
-//    }
 }
+
+
+
+
+
+
 
 /**클래스명 앞에 @Configuration을 등록하면 스프링이 설정 파일임을 인식, 컨테이너에 스프링 빈을 등록할 준비를 합니다.
 @Bean을 사용하여 다음의 메서드를 호출해 스프링 빈이 등록됩니다. memberService메서드가 호출되면 MemberService 객체가 생성되고,

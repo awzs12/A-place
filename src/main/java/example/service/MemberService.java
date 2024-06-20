@@ -1,6 +1,6 @@
 package example.service;
 
-import entity.Member;
+import example.entity.Member;
 import example.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("memberService")
 @Transactional
 public class MemberService {
 

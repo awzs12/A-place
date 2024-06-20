@@ -1,6 +1,6 @@
 package repository;
 
-import entity.Member;
+import example.entity.Member;
 import example.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

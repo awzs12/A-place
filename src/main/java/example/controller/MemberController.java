@@ -1,13 +1,12 @@
 package example.controller;
 
-import entity.Member;
+import example.entity.Member;
 import example.dto.MemberForm;
 import example.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -54,7 +53,7 @@ public class MemberController {
     @GetMapping("/members/login/createMemberForm")
     public String createForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());
-        return "createMemberForm";
+        return "members/createMemberForm";
     }
 
 
@@ -65,7 +64,7 @@ public class MemberController {
         }
         if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 패스워드가 일치하지 않습니다.");
-            return "members/signup_form";
+            return "members/createMemberForm";
         }
 
         Member member = new Member();

@@ -1,6 +1,6 @@
 package service;
 
-import entity.Member;
+import example.entity.Member;
 import example.repository.MemberRepository;
 import example.service.MemberService;
 import org.junit.jupiter.api.Test;
